@@ -1,4 +1,6 @@
 from generators.loader import OdooLoader
+import generators.util
+import pandas as pd
 
 
 def main():
@@ -7,17 +9,29 @@ def main():
 
     tables = loader.load()
 
-    print()
+    orders_df = generators.util.normalize_column_names(tables["orders"])
+    orders_df["order_date"] = pd.to_datetime(orders_df["order_date"])
 
-    print("Customers")
+    order_lines_df = generators.util.normalize_column_names(tables["order_lines"])
 
-    print(tables["customers"].head())
+    products_df = generators.util.normalize_column_names(tables["products"])
 
-    print()
+    product_categories_df = generators.util.normalize_column_names(tables["product_categories"])
 
-    print("Products")
+    customers_df = generators.util.normalize_column_names(tables["customers"])
 
-    print(tables["products"].head())
+
+    print("\nOrders")
+
+    print(orders_df.head())
+
+    print("\nOrders Lines")
+
+    print(order_lines_df.head())
+
+    print("\nProducts")
+
+    print(products_df.head())
 
 
 if __name__ == "__main__":
